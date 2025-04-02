@@ -3,6 +3,7 @@ let books = require("./booksdb.js");
 let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
+const axios = require('axios').default;
 
 // Check if a user with the given username already exists
 const doesExist = (username) => {
@@ -78,5 +79,57 @@ public_users.get('/review/:isbn', function (req, res) {
   const reviews = books[isbn].reviews;
   res.send(JSON.stringify(reviews, null, 4));
 });
+
+// Async function to get the book list available in the shop
+async function getBooks() {
+  try {
+    const response = await axios.get('/');
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Async function to get book details based on ISBN
+async function getBookByIsbn(isbn) {
+  try {
+    const response = await axios.get('/isbn', {
+      params: {
+        isbn: isbn,
+      }
+    });
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Async function to get book details based on author
+async function getBooksByAuthor(author) {
+  try {
+    const response = await axios.get('/author', {
+      params: {
+        author: author,
+      }
+    });
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Async function to get book details based on title
+async function getBooksByTitle(title) {
+  try {
+    const response = await axios.get('/title', {
+      params: {
+        title: title,
+      }
+    });
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 module.exports.general = public_users;
